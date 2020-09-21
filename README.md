@@ -1,3 +1,14 @@
+# Disclaimer
+
+This fork only works for a very specific use case (request permission & save an image to an album).  
+All the other stuff may be broken.  
+Using this fork is strongly discouraged.
+
+
+
+
+
+
 [![Build Status](https://travis-ci.org/terikon/cordova-plugin-photo-library.svg?branch=master)](https://travis-ci.org/terikon/cordova-plugin-photo-library)
 
 That's how it looks and performs in real app:
