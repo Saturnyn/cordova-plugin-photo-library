@@ -246,11 +246,8 @@ import Foundation
 
         let service = PhotoLibraryService.instance
 
-        service.requestAuthorization({
-            let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
-            self.commandDelegate!.send(pluginResult, callbackId: command.callbackId	)
-        }, failure: { (err) in
-            let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: err)
+		service.requestAuthorization({ (status:String) in
+			let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: status)
             self.commandDelegate!.send(pluginResult, callbackId: command.callbackId	)
         })
 
@@ -258,24 +255,29 @@ import Foundation
 
     @objc(saveImage:) func saveImage(_ command: CDVInvokedUrlCommand) {
         concurrentQueue.async {
-
+			//permission checked moved to PhotoLibraryService
+			/*
+			print("PhotoLibrary.saveImage - checking permission")
             if !PhotoLibraryService.hasPermission() {
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: PhotoLibraryService.PERMISSION_ERROR)
                 self.commandDelegate!.send(pluginResult, callbackId: command.callbackId)
                 return
             }
+			*/
 
             let service = PhotoLibraryService.instance
 
             let url = command.arguments[0] as! String
             let album = command.arguments[1] as! String
-
-            service.saveImage(url, album: album) { (libraryItem: NSDictionary?, error: String?) in
+			
+            service.saveImage(url, album: album) { (error: String?) in
+				print("PhotoLibrary - service.saveImage callback", error ?? "success")
                 if (error != nil) {
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: error)
                     self.commandDelegate!.send(pluginResult, callbackId: command.callbackId)
                 } else {
-                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: libraryItem as! [String: AnyObject]?)
+					let item:[String:AnyObject] = [:] //Useless but expected on the js side
+					let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: item)
                     self.commandDelegate!.send(pluginResult, callbackId: command.callbackId	)
                 }
             }
