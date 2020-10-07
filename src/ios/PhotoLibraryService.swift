@@ -690,6 +690,13 @@ final class PhotoLibraryService:NSObject {
 			UIImageWriteToSavedPhotosAlbum(uiImage, self, #selector(imageSaved(_:didFinishSavingWithError:contextInfo:)), nil)
 		}else{
 			completion("failed to create UIImage")
+			
+			do{
+				let data = try Data(contentsOf: imageUrl)
+				print("got data \(data.count)")
+			}catch{
+				print("failed to read data", error)
+			}
 		}
 	}
 	@objc func imageSaved(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
