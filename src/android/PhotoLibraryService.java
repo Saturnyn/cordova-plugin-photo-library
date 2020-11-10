@@ -201,6 +201,8 @@ public class PhotoLibraryService {
     saveMedia(context, cordova, url, album, imageMimeToExtension, new FilePathRunnable() {
       @Override
       public void run(String filePath) {
+        /*
+        //crashes on Android 11 => remove since we do not need it anyway
         try {
           // Find the saved image in the library and return it as libraryItem
           String whereClause = MediaStore.MediaColumns.DATA + " = \"" + filePath + "\"";
@@ -213,6 +215,8 @@ public class PhotoLibraryService {
         } catch (Exception e) {
           completion.run(null);
         }
+        */
+        completion.run(null);
       }
     });
 
